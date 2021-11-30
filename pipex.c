@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aregenia <aregenia@student.21-school.      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/30 17:27:52 by aregenia          #+#    #+#             */
+/*   Updated: 2021/11/30 17:27:54 by aregenia         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "pipex.h"
 
@@ -57,16 +68,16 @@ void	make_cmd(t_pipex *req)
 	error("Error: execve command flag error");
 }
 
-int main(int argc, char **argv, char **envr)
+int	main(int argc, char **argv, char **envr)
 {
-	t_pipex *req;
+	t_pipex	*req;
 
 	if (argc != 5)
 		error("Error: invalid number variables");
 	req = (t_pipex *) malloc(sizeof(t_pipex));
 	if (!req)
 		error("Error: malloc struct");
-	req->argv =argv;
+	req->argv = argv;
 	parse(req, envr);
 	if (pipe(req->fd) == -1)
 		error("Error: pipe");
