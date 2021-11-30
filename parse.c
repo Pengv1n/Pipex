@@ -1,15 +1,15 @@
 #include "pipex.h"
 
-void	ft_free(char **tmp)
+void	ft_free(char **s)
 {
 	int	i;
 
-	if (!tmp)
+	if (!s)
 		return ;
 	i = -1;
-	while (tmp[++i])
-		free (tmp[i]);
-	free(tmp);
+	while (s[++i])
+		free (s[i]);
+	free(s);
 }
 
 char	**find_path(char **envr)
@@ -19,12 +19,8 @@ char	**find_path(char **envr)
 
 	path = ((void *)0);
 	i = -1;
-//	while (envr[++i])
-//		printf("%s\n",envr[i]);
-	i = -1;
 	while (envr[++i])
 	{
-//		printf("%s\n", envr[i]);
 		if (ft_strnstr(envr[i], "PATH=/home", ft_strlen(envr[i])))
 		{
 			path = ft_split(envr[i] + ft_strlen("PATH="), ':');
@@ -32,9 +28,9 @@ char	**find_path(char **envr)
 		}
 	}
 	if (!envr[i])
-		ps_error("Error: no path in envr");
+		error("Error: no path in envr");
 	if (!path)
-		ps_error("Error: malloc error (path split)");
+		error("Error: ft_split path");
 	return (path);
 }
 
@@ -44,13 +40,11 @@ char	*find_check_cmd(char **path, char *tmp_cmd)
 	char	*tmp;
 
 	i = -1;
-	printf("%s\n", tmp_cmd);
 	while (path[++i])
 	{
-		printf("%s\n", path[i]);
 		tmp = ft_strjoin(path[i], tmp_cmd);
 		if (!tmp)
-			ps_error("Error: malloc error (tmp strjoin)");
+			error("Error: strjoin tmp");
 		if (access(tmp, F_OK) == 0)
 			return (tmp);
 		else
@@ -68,13 +62,13 @@ char	**find_cmd(char *command, char **envr)
 	path = find_path(envr);
 	cmd = ft_split(command, ' ');
 	if (!cmd)
-		ps_error("Error: malloc error (cmd split)");
-	tmp_cmd = ft_strjoin("/", *cmd);
+		error("Error: split cmd");
+	tmp_cmd = ft_strjoin("/", cmd[0]);
 	if (!tmp_cmd)
-		ps_error("Error: malloc error (tmp_cmd strjoin)");
-	*cmd = find_check_cmd(path, tmp_cmd);
-	if (!(*cmd))
-		ps_error("Error: no access cmd");
+		error("Error: strjoin tmp_cmd");
+	cmd[0] = find_check_cmd(path, tmp_cmd);
+	if (!(cmd[0]))
+		error("Error: no access cmd");
 	free(tmp_cmd);
 	ft_free(path);
 	return (cmd);
@@ -83,11 +77,11 @@ char	**find_cmd(char *command, char **envr)
 void	parse(t_pipex *req, char **envr)
 {
 	req->inp = open(req->argv[1], O_RDONLY);
-	if (req->inp < 0)
-		ps_error("Error: cannot open file1");
+	if (req->inp == -1)
+		error("Error: cannot open file inp");
 	req->out = open(req->argv[4], O_WRONLY);
-	if (req->out < 0)
-		ps_error("Error: cannot open/create file2");
+	if (req->out == -1)
+		error("Error: cannot open file out");
 	req->cmd1 = find_cmd(req->argv[2], envr);
 	req->cmd2 = find_cmd(req->argv[3], envr);
 }

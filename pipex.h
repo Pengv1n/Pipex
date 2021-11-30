@@ -6,7 +6,6 @@
 #include "libft/libft.h"
 #include "unistd.h"
 #include "sys/wait.h"
-# include "stdio.h"
 
 typedef struct s_pipex
 {
@@ -19,7 +18,7 @@ typedef struct s_pipex
 } t_pipex;
 
 void parse(t_pipex *req, char **envr);
-void	ps_error(char *str);
+void	error(char *str);
 void	ft_free(char **tmp);
 
 #endif
