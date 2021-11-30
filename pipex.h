@@ -19,6 +19,6 @@ typedef struct s_pipex
 
 void parse(t_pipex *req, char **envr);
 void	error(char *str);
-void	ft_free(char **tmp);
+void	ft_free(char **s);
 
 #endif

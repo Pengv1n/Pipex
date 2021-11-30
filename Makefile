@@ -3,11 +3,11 @@ NAME := pipex
 cc := gcc
 FLAGS := -Wall -Werror -Wextra
 
-LIBFT_DIR := ../libft
+LIBFT_DIR := libft
 LIBFT := libft.a
 
 HEAD := pipex.h
-SRC := pipex.c \
+SRC := 	pipex.c	\
 		parse.c
 
 OBJ := $(SRC:.c=.o)
@@ -17,7 +17,7 @@ INCLUDES := -I .
 $(NAME):	$(OBJ)
 			$(CC) -o $(NAME) $(OBJ) $(FLAGS) $(LIBFT_DIR)/$(LIBFT)
 
-$(OBJ):		$(SRC) $(HEAD) Makefile
+.o:		.c $(HEAD) Makefile
 			$(CC) $(FLAGS) $(INCLUDES) -o $@ -c $<
 
 all:	$(NAME)
