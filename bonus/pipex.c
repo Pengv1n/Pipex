@@ -70,7 +70,7 @@ void	make_cmd(t_pipex *req)
 
 void	malloc_attr(t_pipex *req)
 {
-	req->fd = (int *)malloc(sizeof(int) * (req->n_cmd - 1 + req->l));
+	req->fd = (int *)malloc(sizeof(int) * (req->n_cmd - 1 + req->l) * 2);
 	if (!(req->fd))
 		error("Error: malloc req->fd");
 	req->pid  = (int *) malloc(sizeof(int) * (req->n_cmd + req->l));
@@ -93,13 +93,15 @@ int	main(int argc, char **argv, char **envr)
 		error("Error: malloc struct");
 	req->argv = argv;
 	parse(req, envr, argc);
-
-
-	if (pipe(req->fd) == -1)
-		error("Error: pipe");
-	make_cmd(req);
-	ft_free(req->cmd1);
-	ft_free(req->cmd2);
+	malloc_attr(req);
+	make_pipe(req);
+	i == -1;
+	while (++i <req->n_cmd + req->l)
+		ft_free(req->cmd[i]);
+	free(req->cmd);
+	free(req->fd);
+	free(req->pid);
+	free(req->status);
 	free(req);
 	return (0);
 }
