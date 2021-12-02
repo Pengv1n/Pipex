@@ -21,17 +21,18 @@ void	child(char **cmd, int in, int out, t_pipex *req)
 	error("Error: execve");
 }
 
+#include "stdio.h"
+
 void	child_limiter(int in, int out, t_pipex *req)
 {
 	char	*line;
-	int r;
 
 	while (1)
 	{
 		line = get_next_line(in);
 		if (!line)
 			break;
-		if (ft_strnstr(req->limiter, line, ft_strlen(req->limiter)))
+		if (!(ft_strncmp(req->limiter, line, ft_strlen(req->limiter))))
 			break;
 		ft_putstr_fd(line, out);
 		free(line);
@@ -53,13 +54,13 @@ void	make_child(t_pipex *req)
 		if (req->pid[i] == 0)
 		{
 			if (i == 0 && req->l)
-				child_limiter(req->inp, req->out, req);
+				child_limiter(req->inp, req->fd[1], req);
 			else if (i == 0)
 				child(req->cmd[i], req->inp, req->fd[1], req);
 			else if (i == req->n_cmd - 1 + req->l)
 				child(req->cmd[i], req->fd[2 * (i - 1)], req->out, req);
 			else
-				child(req->cmd[i], req->fd[2 * i - 1)], req->fd[i * 2], req);
+				child(req->cmd[i], req->fd[2 * (i - 1)], req->fd[i * 2 + 1], req);
 		}
 	}
 }

@@ -14,7 +14,7 @@ OBJ := $(SRC:.c=.o)
 
 INCLUDES := -I .
 
-$(NAME):	$(OBJ)
+$(NAME):	$(OBJ) $(SRC)
 			$(CC) -o $(NAME) $(OBJ) $(FLAGS) $(LIBFT_DIR)/$(LIBFT)
 
 .o:		.c $(HEAD) Makefile
@@ -31,7 +31,4 @@ re:
 		fclean all
 
 .PHONY: all clean fclean re
-
-test:
-	./$(NAME) ../a "grep a" "wc -c" ../b
 

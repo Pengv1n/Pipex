@@ -34,7 +34,7 @@ typedef struct s_pipex
 	int 	*pid;
 }		t_pipex;
 
-void	parse(t_pipex *req, char **envrm int argc);
+void	parse(t_pipex *req, char **envr, int argc);
 void	error(char *str);
 void	ft_free(char **s);
 void	make_pipe(t_pipex *req);

@@ -93,7 +93,7 @@ void	choose_input(t_pipex *req, int argc)
 		req->limiter = req->argv[2];
 		req->l = 1;
 		req->inp = 0;
-		req->out = open(req->argv[argc - 1], O_WRONLY | O_APPEND | O_CREAT);
+		req->out = open(req->argv[argc - 1], O_WRONLY | O_APPEND | O_CREAT, 0777);
 		if (req->out == -1)
 			error("Error: can't open file out");
 		req->n_cmd = argc - 1 - 3;
@@ -108,7 +108,7 @@ void	choose_input(t_pipex *req, int argc)
 		if (req->inp == -1)
 			error("Error: can't open file inp");
 		req->out = open(req->argv[argc - 1], \
-			O_WRONLY | O_TRUNC | O_CREAT);
+			O_WRONLY | O_TRUNC | O_CREAT, 0777);
 		if (req->out == -1)
 			error("Error: can't open file out");
 		req->n_cmd = argc - 1 - 2;
