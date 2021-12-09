@@ -92,7 +92,7 @@ void	parse(t_pipex *req, char **envr)
 	req->inp = open(req->argv[1], O_RDONLY);
 	if (req->inp == -1)
 		error("Error: cannot open file inp");
-	req->out = open(req->argv[4], O_WRONLY);
+	req->out = open(req->argv[4], O_WRONLY | O_TRUNC | O_CREAT, 0777);
 	if (req->out == -1)
 		error("Error: cannot open file out");
 	req->cmd1 = find_cmd(req->argv[2], envr);
