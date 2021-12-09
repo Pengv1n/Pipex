@@ -12,6 +12,18 @@
 
 #include "pipex.h"
 
+void	ft_free(char **s)
+{
+	int	i;
+
+	if (!s)
+		return ;
+	i = -1;
+	while (s[++i])
+		free (s[i]);
+	free(s);
+}
+
 void	error(char *str)
 {
 	ft_putendl_fd(str, 2);
@@ -23,7 +35,7 @@ void	malloc_attr(t_pipex *req)
 	req->fd = (int *)malloc(sizeof(int) * (req->n_cmd - 1 + req->l) * 2);
 	if (!(req->fd))
 		error("Error: malloc req->fd");
-	req->pid  = (int *) malloc(sizeof(int) * (req->n_cmd + req->l));
+	req->pid = (int *) malloc(sizeof(int) * (req->n_cmd + req->l));
 	if (!(req->pid))
 		error("Error: malloc req->pid");
 	req->status = (int *) malloc(sizeof(int) * (req->n_cmd + req->l));
@@ -34,7 +46,7 @@ void	malloc_attr(t_pipex *req)
 int	main(int argc, char **argv, char **envr)
 {
 	t_pipex	*req;
-	int i;
+	int		i;
 
 	if (argc < 5 || (argc < 6 && \
 		ft_strnstr(argv[1], "here_doc", ft_strlen("here_doc"))))
@@ -47,7 +59,7 @@ int	main(int argc, char **argv, char **envr)
 	malloc_attr(req);
 	make_pipe(req);
 	i = -1;
-	while (++i <req->n_cmd + req->l)
+	while (++i < (req->n_cmd + req->l))
 		ft_free(req->cmd[i]);
 	free(req->cmd);
 	free(req->fd);

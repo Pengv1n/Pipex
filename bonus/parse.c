@@ -12,18 +12,6 @@
 
 #include "pipex.h"
 
-void	ft_free(char **s)
-{
-	int	i;
-
-	if (!s)
-		return ;
-	i = -1;
-	while (s[++i])
-		free (s[i]);
-	free(s);
-}
-
 char	**find_path(char **envr)
 {
 	char	**path;
@@ -78,6 +66,7 @@ char	**find_cmd(char *command, char **envr)
 	tmp_cmd = ft_strjoin("/", cmd[0]);
 	if (!tmp_cmd)
 		error("Error: strjoin tmp_cmd");
+	free(cmd[0]);
 	cmd[0] = find_check_cmd(path, tmp_cmd);
 	if (!(cmd[0]))
 		error("Error: no access cmd");
@@ -93,14 +82,14 @@ void	choose_input(t_pipex *req, int argc)
 		req->limiter = req->argv[2];
 		req->l = 1;
 		req->inp = 0;
-		req->out = open(req->argv[argc - 1], O_WRONLY | O_APPEND | O_CREAT, 0777);
+		req->out = open(req->argv[argc - 1], \
+		O_WRONLY | O_APPEND | O_CREAT, 0777);
 		if (req->out == -1)
 			error("Error: can't open file out");
 		req->n_cmd = argc - 1 - 3;
 	}
 	else
 	{
-		req->l = 0;
 		req->limiter = NULL;
 		if (access(req->argv[1], F_OK) == -1)
 			error("Error: file inp not exists");
@@ -117,8 +106,9 @@ void	choose_input(t_pipex *req, int argc)
 
 void	parse(t_pipex *req, char **envr, int argc)
 {
-	int i;
+	int	i;
 
+	req->l = 0;
 	choose_input(req, argc);
 	req->cmd = (char ***)malloc(sizeof(char **) * (req->n_cmd + 1 + req->l));
 	if (!(req->cmd))
@@ -128,6 +118,6 @@ void	parse(t_pipex *req, char **envr, int argc)
 		req->cmd[0] = NULL;
 	i = -1;
 	while (++i < req->n_cmd)
-		req->cmd[i + req->l] = find_cmd( \
-		req->argv[argc - 1 - req->n_cmd + i], envr);
+		req->cmd[i + req->l] = find_cmd(req->argv[argc - 1 - req->n_cmd + i], \
+		envr);
 }

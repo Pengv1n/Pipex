@@ -28,10 +28,10 @@ typedef struct s_pipex
 	int		out;
 	char	*limiter;
 	int		l;
-	int 	n_cmd;
-	char 	***cmd;
-	int 	*status;
-	int 	*pid;
+	int		n_cmd;
+	char	***cmd;
+	int		*status;
+	int		*pid;
 }		t_pipex;
 
 void	parse(t_pipex *req, char **envr, int argc);

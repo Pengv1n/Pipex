@@ -78,6 +78,7 @@ char	**find_cmd(char *command, char **envr)
 	tmp_cmd = ft_strjoin("/", cmd[0]);
 	if (!tmp_cmd)
 		error("Error: strjoin tmp_cmd");
+	free (cmd[0]);
 	cmd[0] = find_check_cmd(path, tmp_cmd);
 	if (!(cmd[0]))
 		error("Error: no access cmd");

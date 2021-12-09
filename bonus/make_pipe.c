@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   make_pipe.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aregenia <aregenia@student.21-school.      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/09 01:36:45 by aregenia          #+#    #+#             */
+/*   Updated: 2021/12/09 01:36:48 by aregenia         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "pipex.h"
 
 void	close_files(t_pipex *req)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (++i < (req->n_cmd - 1 + req->l) * 2)
@@ -21,8 +33,6 @@ void	child(char **cmd, int in, int out, t_pipex *req)
 	error("Error: execve");
 }
 
-#include "stdio.h"
-
 void	child_limiter(int in, int out, t_pipex *req)
 {
 	char	*line;
@@ -31,9 +41,9 @@ void	child_limiter(int in, int out, t_pipex *req)
 	{
 		line = get_next_line(in);
 		if (!line)
-			break;
+			break ;
 		if (!(ft_strncmp(req->limiter, line, ft_strlen(req->limiter))))
-			break;
+			break ;
 		ft_putstr_fd(line, out);
 		free(line);
 	}
@@ -43,7 +53,7 @@ void	child_limiter(int in, int out, t_pipex *req)
 
 void	make_child(t_pipex *req)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (++i < req->n_cmd + req->l)
@@ -60,14 +70,15 @@ void	make_child(t_pipex *req)
 			else if (i == req->n_cmd - 1 + req->l)
 				child(req->cmd[i], req->fd[2 * (i - 1)], req->out, req);
 			else
-				child(req->cmd[i], req->fd[2 * (i - 1)], req->fd[i * 2 + 1], req);
+				child(req->cmd[i], req->fd[2 * (i - 1)], \
+				req->fd[i * 2 + 1], req);
 		}
 	}
 }
 
 void	make_pipe(t_pipex *req)
 {
-	int i;
+	int	i;
 	int	status;
 
 	i = -1;
